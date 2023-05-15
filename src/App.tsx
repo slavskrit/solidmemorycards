@@ -72,8 +72,16 @@ const App: Component = () => {
         }, 100);
       } else {
         setCards(cards().map((_card) => (
-          _card.id === openedCard.id ? { ..._card, isOpened: false, canBeOpened: true } : _card
+          _card.id === card.id ? { ..._card, isOpened: true } : _card
         )));
+        setTimeout(() => {
+          setCards(cards().map((_card) => (
+            _card.id === card.id ? { ..._card, isOpened: false } : _card
+          )));
+          setCards(cards().map((_card) => (
+            _card.id === openedCard.id ? { ..._card, isOpened: false, canBeOpened: true } : _card
+          )));
+        }, 400);
       }
       setOpenedCards([]);
     }
