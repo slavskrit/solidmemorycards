@@ -89,7 +89,7 @@ const App: Component = () => {
 
   return (
     <div class="app">
-      <div class="container p-5">
+      <div class="text-center">
         <button onClick={[setFieldSize, 2]} class="m-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           2x2
         </button>
@@ -104,9 +104,10 @@ const App: Component = () => {
         <div class={`cards-${fieldSize()}`} >
           <For each={cards()}>{card => {
             return <>
-              <div class="card p-1" onClick={() => card.canBeOpened ? toggle(card) : console.log('Could not open')}>
+              <div class={`card p-1 drop-shadow-md cursor-pointer`}
+                onClick={() => card.canBeOpened ? toggle(card) : console.log('Could not open')}>
                 {card.isOpened ?
-                  <img class="w-full aspect-square rounded-lg" src={card.imageUrl} title={card.id} /> :
+                  <img class="w-full aspect-square rounded-lg" src={card.imageUrl}/> :
                   <div class="w-full aspect-square bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg" title={card.id}></div>
               } 
               </div>
