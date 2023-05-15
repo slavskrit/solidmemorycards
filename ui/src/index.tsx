@@ -7,7 +7,7 @@ import { render } from 'solid-js/web';
  * This file was taken from the cheatsheet example of bootstrap.
  * You will most likely remove it if using this template.
  */
-import './cheatsheet.scss';
+import './index.css';
 
 import App from './App';
 
