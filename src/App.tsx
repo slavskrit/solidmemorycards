@@ -92,17 +92,11 @@ const App: Component = () => {
           6x6
         </button>
       </div>
-      <div class="min-h-screen flex items-center justify-center">
-        <div class={`grid 
-        grid-cols-${fieldSize()} 
-        sm:grid-cols-${fieldSize()} 
-        md:grid-cols-${fieldSize()} 
-        lg:grid-cols-${fieldSize()} 
-        xl:grid-cols-${fieldSize()}
-        2xl:grid-cols-${fieldSize()} gap-4`} >
+      <div class="flex items-center justify-center">
+        <div class={`cards-${fieldSize()}`} >
           <For each={cards()}>{card => {
             return <>
-              <div class={`w-1/${fieldSize()} w-40 h-40`} onClick={() => card.canBeOpened ? toggle(card) : console.log('Could not open')}>
+              <div class="card" onClick={() => card.canBeOpened ? toggle(card) : console.log('Could not open')}>
                 <img class="w-full aspect-square" src={card.isOpened ? card.imageUrl : CARD_BACK_IMAGE_URL} title={card.id} />
               </div>
             </>

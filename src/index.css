@@ -1,3 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.cards-2 {
+  width: 200px;
+}
+
+.cards-4 {
+  width: 400px;
+}
+
+.cards-6 {
+  width: 600px;
+}
+.card {
+  width: 100px;
+  height: 100px;
+  float: left;
+}
