@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -13,17 +13,13 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: install
-        working-directory: ./ui
         run: npm i --legacy-peer-deps
 
       - name: build
-        working-directory: ./ui
         run: npm run build
 
       - name: deploy pages
         uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
           branch: gh-pages
-          folder: ui/dist/public
-        env:
-          PROJECT_PATH: ./ui
+          folder: dist/public
