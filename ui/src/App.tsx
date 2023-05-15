@@ -2,6 +2,7 @@ import { For, createSignal, onCleanup, mapArray, onMount } from 'solid-js';
 import type { Component } from 'solid-js';
 import * as bootstrap from 'bootstrap';
 
+const CARD_BACK_IMAGE_URL = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0OBaos0R931ThGU9zdI9LMG2ymV6st1R0RxOI9pI-_Qy35Yy0b8vjv9hsz3B_KVpvijU&usqp=CAU';
 
 type Card = {
   id: number;
@@ -35,7 +36,7 @@ const App: Component = () => {
         uniquePairPictureId = randomIntFromInterval(0, 200);
       }
       const curentCard = newCards[i];
-      curentCard.imageUrl = `https://picsum.photos/id/${uniquePairPictureId}/200/200`;
+      curentCard.imageUrl = `https://picsum.photos/id/${uniquePairPictureId}/200/300`;
     }
     setCards(newCards);
   });
@@ -50,10 +51,10 @@ const App: Component = () => {
     <>
       <For each={cards()}>{card => {
         return <>
-              <div onClick={() => toggle(card)}>
-                <img src={card.imageUrl} title={card.id} />
-              </div>
-            </>
+          <div onClick={() => toggle(card)}>
+            <img src={card.isOpened ? card.imageUrl : CARD_BACK_IMAGE_URL} title={card.id} />
+          </div>
+        </>
       }}
       </For>
     </>
