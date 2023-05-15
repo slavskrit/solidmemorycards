@@ -12,8 +12,9 @@ type Card = {
 
 const App: Component = () => {
 
-  const [fieldSize, setFieldSize] = createSignal(4);
+  const [fieldSize, setFieldSize] = createSignal(2);
   const [cards, setCards] = createSignal([]);
+  const [openedCards, setOpenedCards] = createSignal([]);
 
   onMount(() => {
     const newCards: Card[] = [];
@@ -42,17 +43,35 @@ const App: Component = () => {
   });
     
   const toggle = (card) => {
-    setCards(cards().map((_card) => (
-      _card.id === card.id ? { ..._card, isOpened: true } : _card
-    )));
+    if (openedCards().length === 0) {
+      openedCards().push(card);
+      setCards(cards().map((_card) => (
+        _card.id === card.id ? { ..._card, isOpened: true } : _card
+      )));
+      setOpenedCards([openedCards()]);
+    } else {
+      const openedCard = openedCards()[0][0]; // TODO: fix this.
+      console.log(openedCard, card);
+      if (openedCard.imageUrl === card.imageUrl) {
+        setCards(cards().map((_card) => (
+          _card.id === card.id ? { ..._card, isOpened: true, canBeOpened: false } : _card
+        )));
+      } else {
+        setCards(cards().map((_card) => (
+          _card.id === openedCard.id ? { ..._card, isOpened: false, canBeOpened: true } : _card
+        )));
+      }
+      setOpenedCards([]);
+    }
+    
   };
 
   return (
     <div class="cards">
       <For each={cards()}>{card => {
         return <>
-          <div class="card" onClick={() => toggle(card)}>
-            <img src={!card.isOpened ? card.imageUrl : CARD_BACK_IMAGE_URL} title={card.id} />
+          <div class="card" onClick={() => card.canBeOpened ? toggle(card) : console.log('Could not open')}>
+            <img src={card.isOpened ? card.imageUrl : CARD_BACK_IMAGE_URL} title={card.id} />
           </div>
         </>
       }}
