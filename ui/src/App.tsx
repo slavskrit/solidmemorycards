@@ -12,7 +12,7 @@ type Card = {
 
 const App: Component = () => {
 
-  const [fieldSize, setFieldSize] = createSignal(2);
+  const [fieldSize, setFieldSize] = createSignal(6);
   const [cards, setCards] = createSignal([]);
   const [openedCards, setOpenedCards] = createSignal([]);
 
@@ -39,7 +39,7 @@ const App: Component = () => {
         uniquePairPictureId = randomIntFromInterval(0, 200);
       }
       const curentCard = newCards[uberIndex[i]];
-      curentCard.imageUrl = `https://picsum.photos/id/${uniquePairPictureId}/200/300`;
+      curentCard.imageUrl = `https://picsum.photos/id/${uniquePairPictureId}/300/300`;
     }
     setCards(newCards);
   }
@@ -61,13 +61,15 @@ const App: Component = () => {
         setCards(cards().map((_card) => (
           _card.id === card.id ? { ..._card, isOpened: true, canBeOpened: false } : _card
         )));
-        if (fieldSize() * fieldSize() === cards().filter((card) => card.isOpened === true).length) {
-          if (confirm('You won! Play again?')) {
-            buildCards()
-          } else {
-            console.log('Game over');
+        setTimeout(() => {
+          if (fieldSize() * fieldSize() === cards().filter((card) => card.isOpened === true).length) {
+            if (confirm('You won! Play again?')) {
+              buildCards()
+            } else {
+              console.log('Game over');
+            }
           }
-        }
+        }, 100);
       } else {
         setCards(cards().map((_card) => (
           _card.id === openedCard.id ? { ..._card, isOpened: false, canBeOpened: true } : _card
@@ -79,33 +81,37 @@ const App: Component = () => {
 
   return (
     <div class="app">
-      <div class="grid gap-4 mb-1 md:grid-cols-4">
-        <label
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          for="tentacles">Enter number of cards (2-10), it will be squared 🤪:</label>
-        <input
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        type="number"
-        id="tentacles"
-        name="tentacles"
-        min="2"
-          max="10"
-          value={fieldSize()}
-        onInput={(e) => setFieldSize(+e.target.value)}
-      >
-        </input>
-        </div>
-
-      <div className={`grid grid-cols-${fieldSize()} gap-${fieldSize()}`} >
-        <For each={cards()}>{card => {
-          return <>
-            <div class="card" onClick={() => card.canBeOpened ? toggle(card) : console.log('Could not open')}>
-              <img src={card.isOpened ? card.imageUrl : CARD_BACK_IMAGE_URL} title={card.id} />
-            </div>
-          </>
-        }}
-        </For>
+      <div class="container p-5">
+        <button onClick={[setFieldSize, 2]} class="m-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          2x2
+        </button>
+        <button onClick={[setFieldSize, 4]} class="m-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          4x4
+        </button>
+        <button onClick={[setFieldSize, 6]} class="m-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          6x6
+        </button>
       </div>
+      <div class="min-h-screen flex items-center justify-center">
+        <div class={`grid 
+        grid-cols-${fieldSize()} 
+        sm:grid-cols-${fieldSize()} 
+        md:grid-cols-${fieldSize()} 
+        lg:grid-cols-${fieldSize()} 
+        xl:grid-cols-${fieldSize()}
+        2xl:grid-cols-${fieldSize()} gap-4`} >
+          
+        {/* <div class="container m-auto grid grid-cols-3" > */}
+          <For each={cards()}>{card => {
+            return <>
+              <div class={`w-1/${fieldSize()} w-40 h-40`} onClick={() => card.canBeOpened ? toggle(card) : console.log('Could not open')}>
+                <img class="w-full aspect-square" src={card.isOpened ? card.imageUrl : CARD_BACK_IMAGE_URL} title={card.id} />
+              </div>
+            </>
+          }}
+          </For>
+          </div>
+        </div>
     </div>
   );
 };
