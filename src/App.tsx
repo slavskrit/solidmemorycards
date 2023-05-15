@@ -90,13 +90,13 @@ const App: Component = () => {
   return (
     <div class="app">
       <div class="text-center">
-        <button onClick={[setFieldSize, 2]} class="m-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <button onClick={[setFieldSize, 2]} class="m-5 drop-shadow-md bg-blue-700 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           2x2
         </button>
-        <button onClick={[setFieldSize, 4]} class="m-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <button onClick={[setFieldSize, 4]} class="m-5 drop-shadow-md bg-blue-700 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           4x4
         </button>
-        <button onClick={[setFieldSize, 6]} class="m-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <button onClick={[setFieldSize, 6]} class="m-5 drop-shadow-md bg-blue-700 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           6x6
         </button>
       </div>
@@ -107,8 +107,8 @@ const App: Component = () => {
               <div class="card p-1 drop-shadow-md cursor-pointer"
                 onClick={() => card.canBeOpened ? toggle(card) : console.log('Could not open')}>
                 {card.isOpened ?
-                  <img class="w-full aspect-square rounded-lg" src={card.imageUrl} /> :
-                  <img class="w-full card-back aspect-square rounded-lg"/> 
+                  <img class="w-full aspect-square rounded-lg" src={card.imageUrl} alt={ `image with id ${card.id}`}/> :
+                  <div class="w-full card-back aspect-square rounded-lg"></div> 
               } 
               </div>
             </>
