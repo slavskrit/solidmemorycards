@@ -48,16 +48,16 @@ const App: Component = () => {
   };
 
   return (
-    <>
+    <div class="cards">
       <For each={cards()}>{card => {
         return <>
-          <div onClick={() => toggle(card)}>
+          <div class="card" onClick={() => toggle(card)}>
             <img src={!card.isOpened ? card.imageUrl : CARD_BACK_IMAGE_URL} title={card.id} />
           </div>
         </>
       }}
       </For>
-    </>
+    </div>
   );
 };
 
