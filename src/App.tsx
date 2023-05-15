@@ -104,11 +104,11 @@ const App: Component = () => {
         <div class={`cards-${fieldSize()}`} >
           <For each={cards()}>{card => {
             return <>
-              <div class={`card p-1 drop-shadow-md cursor-pointer`}
+              <div class="card p-1 drop-shadow-md cursor-pointer"
                 onClick={() => card.canBeOpened ? toggle(card) : console.log('Could not open')}>
                 {card.isOpened ?
-                  <img class="w-full aspect-square rounded-lg" src={card.imageUrl}/> :
-                  <div class="w-full aspect-square bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg" title={card.id}></div>
+                  <img class="w-full aspect-square rounded-lg" src={card.imageUrl} /> :
+                  <img class="w-full card-back aspect-square rounded-lg"/> 
               } 
               </div>
             </>
