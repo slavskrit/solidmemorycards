@@ -96,7 +96,7 @@ const App: Component = () => {
         </input>
         </div>
 
-      <div class="cards" >
+      <div className={`grid grid-cols-${fieldSize()} gap-${fieldSize()}`} >
         <For each={cards()}>{card => {
           return <>
             <div class="card" onClick={() => card.canBeOpened ? toggle(card) : console.log('Could not open')}>

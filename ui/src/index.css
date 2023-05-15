@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  grid-gap: 5px;
-}
-
 .card {
   width: 100%;
   height: 300px;
