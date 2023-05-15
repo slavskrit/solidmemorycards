@@ -100,8 +100,6 @@ const App: Component = () => {
         lg:grid-cols-${fieldSize()} 
         xl:grid-cols-${fieldSize()}
         2xl:grid-cols-${fieldSize()} gap-4`} >
-          
-        {/* <div class="container m-auto grid grid-cols-3" > */}
           <For each={cards()}>{card => {
             return <>
               <div class={`w-1/${fieldSize()} w-40 h-40`} onClick={() => card.canBeOpened ? toggle(card) : console.log('Could not open')}>
