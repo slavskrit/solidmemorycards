@@ -6,55 +6,54 @@ import * as bootstrap from 'bootstrap';
 type Card = {
   id: number;
   isOpened: boolean;
+  canBeOpened: boolean;
   imageUrl: string;
 };
 
 const App: Component = () => {
 
   const [fieldSize, setFieldSize] = createSignal(4);
-  const [cards, setCards] = createSignal([
-    
-  ]);
+  const [cards, setCards] = createSignal([]);
 
   onMount(() => {
-    const newCards: Card[][] = [];
+    const newCards: Card[] = [];
     
     for (let i = 0; i < fieldSize(); i++) {
-      const cardsRow: Card[] = [];
       for (let j = 0; j < fieldSize(); j++) {
-        cardsRow.push({
+        newCards.push({
           id: i * fieldSize() + j,
           isOpened: false,
           imageUrl: '',
+          canBeOpened: true,
         });
       };
-      newCards.push(cardsRow);
     };
-    // 
     let uberIndex = new Array<number>(fieldSize() * fieldSize());
     let uniquePairPictureId = randomIntFromInterval(0, 200);
     for (let i = 0; i < uberIndex.length; i++) {
       if (i % 2 == 0) {
         uniquePairPictureId = randomIntFromInterval(0, 200);
       }
-      const curentCard = newCards[Math.floor(i / fieldSize())][i % fieldSize()];
-      console.log(curentCard);
+      const curentCard = newCards[i];
       curentCard.imageUrl = `https://picsum.photos/id/${uniquePairPictureId}/200/200`;
     }
     setCards(newCards);
   });
     
+  const toggle = (card) => {
+    setCards(cards().map((_card) => (
+      _card.id === card.id ? { ..._card, isOpened: true } : _card
+    )));
+  };
+
   return (
     <>
-      <For each={cards()}>{cardsRow => {
+      <For each={cards()}>{card => {
         return <>
-                  <For each={cardsRow}>{card => {
-            return <>
-              <img src={card.imageUrl} title={card.id} />
+              <div onClick={() => toggle(card)}>
+                <img src={card.imageUrl} title={card.id} />
+              </div>
             </>
-                    }}
-                  </For>
-              </>
       }}
       </For>
     </>
