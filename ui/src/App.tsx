@@ -1,4 +1,4 @@
-import { For, createSignal, onCleanup, mapArray, onMount } from 'solid-js';
+import { For, createSignal, onCleanup, mapArray, onMount, createEffect } from 'solid-js';
 import type { Component } from 'solid-js';
 
 const CARD_BACK_IMAGE_URL = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0OBaos0R931ThGU9zdI9LMG2ymV6st1R0RxOI9pI-_Qy35Yy0b8vjv9hsz3B_KVpvijU&usqp=CAU';
@@ -16,7 +16,9 @@ const App: Component = () => {
   const [cards, setCards] = createSignal([]);
   const [openedCards, setOpenedCards] = createSignal([]);
 
-  onMount(() => {
+  createEffect(() => buildCards());
+
+  function buildCards() {
     const newCards: Card[] = [];
     
     for (let i = 0; i < fieldSize(); i++) {
@@ -40,6 +42,10 @@ const App: Component = () => {
       curentCard.imageUrl = `https://picsum.photos/id/${uniquePairPictureId}/200/300`;
     }
     setCards(newCards);
+  }
+
+  onMount(() => {
+    buildCards()
   });
     
   const toggle = (card) => {
@@ -51,11 +57,17 @@ const App: Component = () => {
       setOpenedCards([openedCards()]);
     } else {
       const openedCard = openedCards()[0][0]; // TODO: fix this.
-      console.log(openedCard, card);
       if (openedCard.imageUrl === card.imageUrl) {
         setCards(cards().map((_card) => (
           _card.id === card.id ? { ..._card, isOpened: true, canBeOpened: false } : _card
         )));
+        if (fieldSize() * fieldSize() === cards().filter((card) => card.isOpened === true).length) {
+          if (confirm('You won! Play again?')) {
+            buildCards()
+          } else {
+            console.log('Game over');
+          }
+        }
       } else {
         setCards(cards().map((_card) => (
           _card.id === openedCard.id ? { ..._card, isOpened: false, canBeOpened: true } : _card
@@ -63,19 +75,37 @@ const App: Component = () => {
       }
       setOpenedCards([]);
     }
-    
   };
 
   return (
-    <div class="cards">
-      <For each={cards()}>{card => {
-        return <>
-          <div class="card" onClick={() => card.canBeOpened ? toggle(card) : console.log('Could not open')}>
-            <img src={card.isOpened ? card.imageUrl : CARD_BACK_IMAGE_URL} title={card.id} />
-          </div>
-        </>
-      }}
-      </For>
+    <div class="app">
+      <div class="grid gap-4 mb-1 md:grid-cols-4">
+        <label
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          for="tentacles">Enter number of cards (2-10), it will be squared 🤪:</label>
+        <input
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        type="number"
+        id="tentacles"
+        name="tentacles"
+        min="2"
+          max="10"
+          value={fieldSize()}
+        onInput={(e) => setFieldSize(+e.target.value)}
+      >
+        </input>
+        </div>
+
+      <div class="cards" >
+        <For each={cards()}>{card => {
+          return <>
+            <div class="card" onClick={() => card.canBeOpened ? toggle(card) : console.log('Could not open')}>
+              <img src={card.isOpened ? card.imageUrl : CARD_BACK_IMAGE_URL} title={card.id} />
+            </div>
+          </>
+        }}
+        </For>
+      </div>
     </div>
   );
 };
