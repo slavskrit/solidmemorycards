@@ -104,8 +104,11 @@ const App: Component = () => {
         <div class={`cards-${fieldSize()}`} >
           <For each={cards()}>{card => {
             return <>
-              <div class="card" onClick={() => card.canBeOpened ? toggle(card) : console.log('Could not open')}>
-                <img class="w-full aspect-square" src={card.isOpened ? card.imageUrl : CARD_BACK_IMAGE_URL} title={card.id} />
+              <div class="card p-1" onClick={() => card.canBeOpened ? toggle(card) : console.log('Could not open')}>
+                {card.isOpened ?
+                  <img class="w-full aspect-square rounded-lg" src={card.imageUrl} title={card.id} /> :
+                  <div class="w-full aspect-square bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg" title={card.id}></div>
+              } 
               </div>
             </>
           }}
